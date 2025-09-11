@@ -3,7 +3,7 @@
 ## Student Details
 
 - **Full Name:** `Xindi Li`
-- **CCID:** `<Enter ccid>`
+- **CCID:** `xindi8`
 
 ## References and Resources
 
@@ -13,5 +13,5 @@ List any resources used here, or simply put `N/A` if not applicable.
 
 | Student Name | CCID      |
 | ------------ | --------- |
-| `student`    | `student` |
+| `Xindi Li`    | `xindi8` |
 | `<Add more>` | `<CCID>`  |
