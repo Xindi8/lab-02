@@ -2,7 +2,7 @@
 
 ## Student Details
 
-- **Full Name:** `<Enter name>`
+- **Full Name:** `Xindi Li`
 - **CCID:** `<Enter ccid>`
 
 ## References and Resources
