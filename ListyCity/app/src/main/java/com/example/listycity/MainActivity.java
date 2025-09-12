@@ -1,6 +1,7 @@
 package com.example.listycity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,60 +19,70 @@ import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
-    ListView cityList;
-    ArrayAdapter<String> cityAdapter;
-    ArrayList<String> dataList;
+    private ArrayList<String> dataList;
+    private ArrayAdapter<String> cityAdapter;
+    private ListView cityListView;
+    private EditText editCityName;
+    private Button btnAdd, btnDelete, btnConfirm;
 
-    EditText editCity;  // Declare EditText to get user input
-
-    String selectedCity = null;
+    private int selectedPosition = -1; // Store the selected city's position
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize the views
-        cityList = findViewById(R.id.city_list);
-        editCity = findViewById(R.id.editCity);  // Initialize EditText
-        Button addButton = findViewById(R.id.addButton);
-        Button deleteButton = findViewById(R.id.deleteButton);
+        // Initialize references
+        cityListView = findViewById(R.id.city_list);
+        editCityName = findViewById(R.id.editCity);
+        btnAdd = findViewById(R.id.addButton);
+        btnDelete = findViewById(R.id.deleteButton);
+        btnConfirm = findViewById(R.id.confirmButton);
 
-        // Sample city list
-        String[] cities = {"Edmonton", "Vancouver", "Moscow", "Sydney", "Berlin", "Vienna", "Tokyo", "Beijing", "Osaka", "New Delhi"};
-        dataList = new ArrayList<>();
-        dataList.addAll(Arrays.asList(cities));
+        // Data source (initial list of cities)
+        String[] cities = {"Edmonton", "Calgary", "Vancouver", "Toronto"};
+        dataList = new ArrayList<>(Arrays.asList(cities));
 
-        // Create an ArrayAdapter for the ListView
-        cityAdapter = new ArrayAdapter<>(this, R.layout.content, dataList);
-        cityList.setAdapter(cityAdapter);
+        // Adapter for the ListView
+        cityAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dataList);
+        cityListView.setAdapter(cityAdapter);
 
-        // City selection
-        cityList.setOnItemClickListener((parent, view, position, id) -> {
-            selectedCity = dataList.get(position);
-            Toast.makeText(MainActivity.this, "Selected: " + selectedCity, Toast.LENGTH_SHORT).show();
+        // Handle item selection in ListView
+        cityListView.setOnItemClickListener((parent, view, position, id) -> {
+            selectedPosition = position;
+            Toast.makeText(MainActivity.this,
+                    "Selected: " + dataList.get(position),
+                    Toast.LENGTH_SHORT).show();
         });
 
-        // Add new city functionality
-        addButton.setOnClickListener(v -> {
-            String newCity = editCity.getText().toString().trim();
+        // Show the EditText and Confirm Button when Add City is pressed
+        btnAdd.setOnClickListener(v -> {
+            editCityName.setVisibility(View.VISIBLE);  // Show the EditText
+            btnConfirm.setVisibility(View.VISIBLE);    // Show the Confirm button
+        });
+
+        // Confirm Button (Pressed after typing a name)
+        btnConfirm.setOnClickListener(v -> {
+            String newCity = editCityName.getText().toString().trim();
             if (!newCity.isEmpty()) {
-                dataList.add(newCity);  // Add new city to the list
-                cityAdapter.notifyDataSetChanged();  // Notify adapter to update ListView
-                editCity.setText("");  // Clear input field
+                dataList.add(newCity);  // Add the city
+                cityAdapter.notifyDataSetChanged();  // Update ListView
+                editCityName.setText("");  // Clear input field
+                editCityName.setVisibility(View.GONE); // Hide EditText
+                btnConfirm.setVisibility(View.GONE);  // Hide Confirm button
             } else {
-                Toast.makeText(MainActivity.this, "Please enter a city name", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Enter a valid city name", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Delete selected city functionality
-        deleteButton.setOnClickListener(v -> {
-            if (selectedCity != null) {
-                dataList.remove(selectedCity);  // Remove selected city
-                cityAdapter.notifyDataSetChanged();  // Notify adapter to update ListView
-                selectedCity = null;  // Clear selected city
+        // Delete City Button (Pressed after selecting a city)
+        btnDelete.setOnClickListener(v -> {
+            if (selectedPosition != -1) {
+                dataList.remove(selectedPosition); // Remove selected city
+                cityAdapter.notifyDataSetChanged(); // Update ListView
+                selectedPosition = -1; // Reset selection
             } else {
-                Toast.makeText(MainActivity.this, "No city selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Select a city to delete", Toast.LENGTH_SHORT).show();
             }
         });
     }
