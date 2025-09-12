@@ -25,8 +25,8 @@
             android:id="@+id/editCity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter city name" />
-
+            android:hint="Enter city name"
+            android:inputType="text" />
         <Button
             android:id="@+id/addButton"
             android:layout_width="match_parent"
