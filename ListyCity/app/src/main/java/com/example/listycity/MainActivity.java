@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int selectedPosition = -1; // Store the selected city's position
 //
+     //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
